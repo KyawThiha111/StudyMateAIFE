@@ -47,7 +47,7 @@ const OptionPage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-2xl sm:text-3xl font-bold mb-10 text-center bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent"
+        className="text-2xl p-10 sm:text-3xl font-bold mb-10 text-center bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent"
       >
         Choose Your Quiz Mode
       </motion.h1>

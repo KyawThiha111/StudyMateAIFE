@@ -97,7 +97,7 @@ export const Topbar = () => {
                   <div className="rounded-full bg-primary/10 text-primary h-10 w-10 flex items-center justify-center font-medium">  <User className="w-6 h-6 text-gray-500" /></div>
                   <div>
                     <div className="font-medium">{decodeToken.studentname}</div>
-                    <p className="text-sm text-muted-foreground">{decodeToken.studentid}</p>
+                    {/* <p className="text-sm text-muted-foreground">{decodeToken.studentid}</p> */}
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-3 text-sm">
@@ -115,7 +115,7 @@ export const Topbar = () => {
                   </div>
                   
                 </div>
-                <button onClick={()=>dispatch(logout())} className="bg-gray-500 inline-block w-full py-3 mt-3 text-white text-bold">Logout</button>
+              
               </div>
             </DialogContent>
           </Dialog>

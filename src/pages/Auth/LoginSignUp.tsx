@@ -46,7 +46,7 @@ export const LoginSignUp = () => {
     ...(!isLogin
       ? [
           { label: "Name", name: "name", type: "text", required: true },
-          { label: "Student ID", name: "studentid", type: "text", required: true },
+        
         ]
       : []),
     { label: "Email", name: "email", type: "email", required: true },

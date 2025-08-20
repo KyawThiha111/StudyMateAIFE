@@ -54,10 +54,8 @@ const Index = () => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                      { label: "Javascript", value: 75 },
-                      { label: "Science", value: 60 },
-                      { label: "History", value: 45 },
-                      { label: "Literature", value: 80 }
+                      { label: "CS", value: 75 },
+                     
                     ].map((s) => (
                       <div key={s.label} className="rounded-lg border p-4">
                         <div className="flex items-center justify-between mb-2">
@@ -107,51 +105,71 @@ const Index = () => {
             </section>
 
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle>Upcoming Quizzes</CardTitle>
-                </CardHeader>
-                <CardContent className="divide-y">
-                  {[
-                    { subject: "Mathematics", topic: "Calculus: Derivatives", difficulty: "Hard", time: "30 min", questions: 15 },
-                    { subject: "Science", topic: "Physics: Newton's Laws", difficulty: "Medium", time: "20 min", questions: 10 },
-                    { subject: "History", topic: "World War II", difficulty: "Medium", time: "40 min", questions: 20 },
-                  ].map((q, i) => (
-                    <div key={i} className="py-4 flex items-center justify-between gap-4">
-                      <div>
-                        <div className="font-medium">{q.subject}</div>
-                        <p className="text-sm text-muted-foreground">{q.topic}</p>
-                        <div className="mt-1 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                          <span>{q.questions} questions</span>
-                          <span>•</span>
-                          <span>{q.time}</span>
-                          <Badge variant="secondary">{q.difficulty}</Badge>
-                        </div>
-                      </div>
-                      <Button onClick={() => navigate("/option/")}>Start Quiz</Button>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+  {/* Upcoming Quizzes */}
+  <Card className="lg:col-span-2">
+    <CardHeader>
+      <CardTitle className="text-lg font-semibold">📅 Upcoming Quizzes</CardTitle>
+    </CardHeader>
+    <CardContent className="divide-y">
+      {[
+        { subject: "IT Fundamentals", topic: "Introduction to Computer Systems", difficulty: "Easy", time: "30 min", questions: 15 },
+        { subject: "Computer Science",topic:"What is Computer Science",  difficulty: "Medium", time: "20 min", questions: 10 },
+        { subject: "Programming", topic: "JavaScript Basics", difficulty: "Medium", time: "40 min", questions: 20 },
+      ].map((q, i) => (
+        <div
+          key={i}
+          className="py-4 flex items-center justify-between gap-4 transition hover:bg-muted/30 rounded-lg px-3"
+        >
+          <div>
+            <div className="font-semibold text-base">{q.subject}</div>
+            <p className="text-sm text-muted-foreground">{q.topic}</p>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recommended Learning</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {[
-                    { title: "Advanced Calculus", meta: "8 weeks • Advanced" },
-                    { title: "Quantum Physics Basics", meta: "10 weeks • Intermediate" },
-                    { title: "Creative Writing", meta: "6 weeks • Intermediate" },
-                  ].map((c, i) => (
-                    <div key={i} className="rounded-lg border p-4">
-                      <div className="font-medium">{c.title}</div>
-                      <p className="text-sm text-muted-foreground">{c.meta}</p>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </section>
+            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1">
+                ⏱ {q.time}
+              </span>
+              <span className="flex items-center gap-1">
+                ❓ {q.questions} Qs
+              </span>
+              <Badge
+                variant={q.difficulty === "Hard" ? "destructive" : q.difficulty === "Medium" ? "secondary" : "outline"}
+              >
+                {q.difficulty}
+              </Badge>
+            </div>
+          </div>
+          <Button size="sm" onClick={() => navigate("/option/")}>Start</Button>
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+
+  {/* Recommended Learning */}
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-lg font-semibold">🎯 Recommended Learning</CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-3">
+      {[
+        { title: "Advanced Calculus", meta: "8 weeks • Advanced" },
+        { title: "Quantum Physics Basics", meta: "10 weeks • Intermediate" },
+        { title: "Creative Writing", meta: "6 weeks • Intermediate" },
+      ].map((c, i) => (
+        <div
+          key={i}
+          className="rounded-xl border p-4 transition hover:shadow-md hover:border-primary/50"
+        >
+          <div className="font-medium flex items-center justify-between">
+            {c.title}
+            <Badge variant="outline">New</Badge>
+          </div>
+          <p className="text-sm text-muted-foreground mt-1">{c.meta}</p>
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+</section>
+
 
             {/* Inline Chat Section */}
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
