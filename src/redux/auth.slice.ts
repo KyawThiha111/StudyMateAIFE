@@ -7,7 +7,6 @@ interface userType {
     email:string
 }
 interface AuthState {
-  userinfo:userType|null;
   accessToken:string|null;
   isAuthenticated: boolean;
 }
@@ -18,7 +17,6 @@ interface AuthState {
 }; */ 
 
 const initialState: AuthState = {
-    userinfo:null,
   accessToken: null,
   isAuthenticated: false,
 };
@@ -27,28 +25,27 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login:(state,action:PayloadAction<{user:AuthState["userinfo"],token:string}>)=>{
-      state.userinfo = action.payload.user;
+    /* login:(state,action:PayloadAction<{token:string}>)=>{
       state.accessToken = action.payload.token;
       state.isAuthenticated = true
-    },
+    }, */
     logout: (state) => {
-      state.userinfo = null;
       state.accessToken = null;
       state.isAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
     builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
-      state.accessToken = action.payload.loginToken;
+      state.accessToken = action.payload.token;
       state.isAuthenticated = true;
+      console.log(action.payload)
     });
     builder.addMatcher(authApi.endpoints.signup.matchFulfilled, (state, action) => {
-      state.accessToken = action.payload.loginToken;
+      state.accessToken = action.payload.token;
       state.isAuthenticated = true;
     });
   },
 });
 
-export const { logout,login} = authSlice.actions;
+export const { logout} = authSlice.actions;
 export default authSlice.reducer;

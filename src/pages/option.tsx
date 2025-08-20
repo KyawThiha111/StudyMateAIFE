@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-
+import { useSearchParams } from "react-router-dom";
 const OptionPage = () => {
   const navigate = useNavigate();
-
+  const [searchParams] = useSearchParams();
+  const subject = searchParams.get("subject");
+  const chapter = searchParams.get("chapter");
+  const topic = searchParams.get("topic");
   const cards = [
     {
       title: "Basic",
@@ -54,7 +57,7 @@ const OptionPage = () => {
                 <Button
                   onClick={() =>
                     navigate(
-                      `/quiz/${encodeURIComponent(
+                      `/quiz?subject=${subject}&chapter=${chapter}&topic=${topic}&option=${encodeURIComponent(
                         c.title.toLowerCase().replace(/\s+/g, "-")
                       )}`
                     )

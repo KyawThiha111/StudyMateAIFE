@@ -32,7 +32,7 @@ const App = () => (
             <Route path="/" element={<RouteGuard><Index /></RouteGuard>} />
             <Route path="/lessons" element={<RouteGuard><Lessons /></RouteGuard>} />
             <Route path="/option" element={<RouteGuard><OptionPage/></RouteGuard>}/>
-            <Route path="/quiz/:lessonId" element={<RouteGuard><Quiz /></RouteGuard>} />
+            <Route path="/quiz" element={<RouteGuard><Quiz subject="Computer Science" chapter="1" topic="Javascript Data Type" option="easy" /></RouteGuard>} />
             <Route path="/subject/:subjectname" element={<RouteGuard><ChaptersPage /></RouteGuard>} />
             <Route path="/computerscience/:subsubject/:chapter" element={<RouteGuard><CSChapterPage/></RouteGuard>}/>
             {/* Public Route */}

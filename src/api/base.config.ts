@@ -4,7 +4,7 @@ import { RootState } from "@/redux/store";
 export const baseAPI = createApi({
   reducerPath: "base",
   baseQuery: fetchBaseQuery({
-    baseUrl:"https://eise.site/api",
+    baseUrl:"https://hackathon-20uq.onrender.com",
    // baseUrl: import.meta.env.VITE_API_URL,
     // headers: {
     //   "Content-Type": "application/json",

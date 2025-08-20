@@ -1,18 +1,18 @@
 
-export interface ChapterType {
+/* export interface ChapterType {
   chapter: number;
   title: string;
   route:string;
   content: string[];
-}
-interface SubSubjectType {
+} */
+/* interface SubSubjectType {
   name: string;
   chapter: ChapterType[];
-}
-export interface SubjectDataType {
+} */
+ export interface SubjectDataType {
   subject: string;
   subSubject: SubSubjectType[];
-}
+} 
 //MUST BE FETCHED AS JSON DATA
 export interface ChapterType {
   chapter: number;
@@ -21,7 +21,7 @@ export interface ChapterType {
   content: string[];
 }
 
-interface SubSubjectType {
+export interface SubSubjectType {
   name: string;
   chapter: ChapterType[];
 }
@@ -131,7 +131,7 @@ const ComputerScienceData: SubjectDataType = {
       ],
     },
     {
-      name: "Introduction to Backend Development with Node.js and Express",
+      name: "Introduction to Backend Development with Nodejs and Express",
       chapter: [
         {
           chapter: 1,

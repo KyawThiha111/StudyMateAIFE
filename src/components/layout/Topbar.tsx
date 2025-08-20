@@ -7,11 +7,32 @@ import { useEffect, useState } from "react";
 import { getGeminiApiKey, setGeminiApiKey, clearGeminiApiKey } from "@/lib/keys";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/auth.slice";
+import { useSelector } from "react-redux";
+import {jwtDecode} from "jwt-decode";
+import { RootState } from "@/redux/store";
+import { useNavigate } from "react-router-dom";
+interface DecodeTokenType{
+   id: string,
+  studentid: string,
+  studentname: string,
+  email: string,
+  iat: number,
+  exp:number
+}
 export const Topbar = () => {
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState("");
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const authToken = useSelector((state: RootState) => state.auth.accessToken);
+  console.log(authToken)
+  useEffect(()=>{
+   if(!authToken){
+     navigate("/auth")
+  }
+  },[authToken,navigate])
 
+  const decodeToken:DecodeTokenType = jwtDecode(authToken);
   useEffect(() => {
     const existing = getGeminiApiKey();
     if (existing) setKey(existing);
@@ -21,7 +42,7 @@ export const Topbar = () => {
     setGeminiApiKey(key.trim());
     setOpen(false);
   };
-
+  if(!authToken) return null;
   return (
     <header className="h-16 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40 sticky top-0 z-10">
       <div className="container h-full flex items-center justify-between gap-4">
@@ -74,8 +95,8 @@ export const Topbar = () => {
                 <div className="flex items-center gap-3">
                   <div className="rounded-full bg-primary/10 text-primary h-10 w-10 flex items-center justify-center font-medium">A</div>
                   <div>
-                    <div className="font-medium">Alex Student</div>
-                    <p className="text-sm text-muted-foreground">alex@student.edu</p>
+                    <div className="font-medium">{decodeToken.studentname}</div>
+                    <p className="text-sm text-muted-foreground">{decodeToken.studentid}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-3 text-sm">

@@ -2,83 +2,154 @@ import { Helmet } from "react-helmet-async";
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
-
-function toTitle(slug: string) {
-  return slug
-    .split("-")
-    .map((s) => (s.length > 2 ? s[0].toUpperCase() + s.slice(1) : s.toUpperCase()))
-    .join(" ");
+import { useState } from "react";
+import axios from "axios";
+import {useSearchParams} from "react-router-dom";
+interface QuizQuestion {
+  question: string;
+  options: string[];
+  answer: string;
 }
 
-const Quiz = () => {
-  const { lessonId = "" } = useParams();
-  const readable = useMemo(() => toTitle(lessonId), [lessonId]);
+interface QuizProps {
+  subject: string;
+  chapter: string;
+  topic: string;
+  option: string; // "easy", "medium", "hard"
+}
 
-  const questions = useMemo(() => {
-    // Generate 10 placeholder questions related to the lesson topic
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: `${lessonId}-q${i + 1}`,
-      text: `${readable}: Question ${i + 1}`,
-      options: ["Option A", "Option B", "Option C", "Option D"],
-    }));
-  }, [lessonId, readable]);
+export default function Quiz() {
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
+  const [showResults, setShowResults] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const subject = searchParams.get("subject");
+  const chapter = searchParams.get("chapter");
+  const topic = searchParams.get("topic");
+  const option = searchParams.get('option');
+  const fetchQuiz = async () => {
+    setLoading(true);
+    setShowResults(false);
+    setUserAnswers({});
+    try {
+      const res = await axios.get("https://hackathon-20uq.onrender.com/api/quizes", {
+        params: { subject, chapter, topic, option },
+      });
+
+      let parsed = res.data.quizes;
+      if (typeof parsed === "string") {
+        try {
+          parsed = JSON.parse(parsed);
+        } catch (e) {
+          console.error("Invalid JSON from API:", parsed);
+          parsed = [];
+        }
+      }
+      setQuestions(parsed);
+    } catch (err) {
+      console.error("Failed to fetch quiz", err);
+    }
+    setLoading(false);
+  };
+
+  const handleSelect = (qIndex: number, choice: string) => {
+    setUserAnswers((prev) => ({ ...prev, [qIndex]: choice }));
+  };
+
+  const correctCount = questions.reduce((count, q, idx) => {
+    return userAnswers[idx] === q.answer ? count + 1 : count;
+  }, 0);
+
+  const scorePercent = ((correctCount / questions.length) * 100).toFixed(1);
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{`Quiz: ${readable} | Assistant AI`}</title>
-        <meta name="description" content={`Practice with 10 related questions for ${readable}.`} />
-        <link rel="canonical" href={`/quiz/${lessonId}`} />
+        <title>{`Quiz | Assistant AI`}</title>
       </Helmet>
+
       <div className="flex">
         <Sidebar />
         <div className="flex-1 min-w-0">
-          <Topbar />
+          <Topbar/>
           <main className="container py-6 space-y-6">
-            <section className="rounded-xl border p-6 bg-card">
-              <h1 className="text-2xl md:text-3xl font-semibold">Quiz: {readable}</h1>
-              <p className="text-muted-foreground mt-1">10 related questions. Choose the best answer for each.</p>
-              <div className="mt-3">
-                <Link to="/lessons" className="text-sm underline text-primary">← Back to Lessons</Link>
-              </div>
+
+            <section className="rounded-xl border p-6 bg-card shadow-sm">
+              <h1 className="text-2xl font-bold">Topic Quiz</h1>
+              <p className="text-muted-foreground mt-2">Test your knowledge on this topic.</p>
+              <Button onClick={fetchQuiz} disabled={loading} className="mt-4">
+                {loading ? "Loading..." : "📋 Take Quiz"}
+              </Button>
             </section>
 
-            <section className="space-y-4">
-              {questions.map((q, idx) => (
-                <Card key={q.id}>
-                  <CardHeader>
-                    <CardTitle className="text-base">{idx + 1}. {q.text}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <RadioGroup name={`q-${idx}`} className="grid gap-3">
-                      {q.options.map((opt, oi) => {
-                        const value = String.fromCharCode(65 + oi);
-                        const id = `${q.id}-${value}`;
-                        return (
-                          <label key={id} htmlFor={id} className="flex items-center gap-3 rounded-md border p-3 hover:bg-accent cursor-pointer">
-                            <RadioGroupItem id={id} value={value} />
-                            <span className="text-sm">{opt}</span>
-                          </label>
-                        );
-                      })}
-                    </RadioGroup>
-                  </CardContent>
-                </Card>
-              ))}
+            {questions.length > 0 && (
+              <section className="space-y-6">
+                {questions.map((q, i) => {
+                  const isCorrect = q.answer === userAnswers[i];
+                  return (
+                    <Card key={i} className="border rounded-lg shadow-sm">
+                      <CardHeader>
+                        <CardTitle className="text-lg font-semibold">
+                          {i + 1}. {q.question}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        {q.options.map((opt, j) => {
+                          const isSelected = userAnswers[i] === opt;
+                          const isRightAnswer = q.answer === opt;
 
-              <div className="flex items-center justify-end pt-2">
-                <Button>Submit Quiz</Button>
-              </div>
-            </section>
+                          return (
+                            <button
+                              key={j}
+                              onClick={() => handleSelect(i, opt)}
+                              disabled={showResults}
+                              className={`block w-full text-left p-3 rounded-md border transition-all
+                                ${isSelected ? "border-blue-500 bg-blue-50" : "border"}
+                                ${showResults && isRightAnswer ? "bg-green-100 border-green-500" : ""}
+                                ${showResults && isSelected && !isRightAnswer ? "bg-red-100 border-red-400" : ""}
+                              `}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+
+                        {showResults && (
+                          <div className={`text-sm mt-2 ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                            {isCorrect ? "✅ Correct" : `❌ Correct answer: ${q.answer}`}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+
+                {!showResults ? (
+                  <div className="flex justify-end">
+                    <Button onClick={() => setShowResults(true)} className="mt-4">
+                      Check Answers
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="rounded-lg border p-6 bg-muted">
+                    <h2 className="text-xl font-semibold">📊 Results</h2>
+                    <p className="mt-2 text-base">
+                      You got <strong>{correctCount}</strong> out of <strong>{questions.length}</strong> correct.
+                    </p>
+                    <p className="text-muted-foreground">Score: {scorePercent}%</p>
+                  </div>
+                )}
+              </section>
+            )}
           </main>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default Quiz;
+
+
