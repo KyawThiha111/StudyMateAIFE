@@ -5,6 +5,8 @@ import { SubjectDataType } from "../SubjectData/ComputerScience/CSData";
 import ComputerScienceData from "../SubjectData/ComputerScience/CSData";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Trophy } from "lucide-react";
+import { updateLessonField } from "@/redux/latestlession.slice";
+import { useDispatch } from "react-redux";
 import {
   Accordion,
   AccordionContent,
@@ -27,12 +29,27 @@ interface SubProgessType {
 const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
+ const dispatch = useDispatch();
   const {
     data: ComputerSciencProgess,
     isLoading,
     isError,
   } = useGetProgressQuery();
+
+  const handleAskAiClick = ({subjectname,chapter,subsubdata,topic}) => {
+  dispatch(
+    updateLessonField({
+      subject: subjectname,
+      chapter: chapter.chapter,
+      title: subsubdata.name,
+      topic: [topic + " in " + subsubdata.name],
+    })
+  );
+
+  navigate(
+    `/aichat?subject=${subjectname}&chapter=${chapter.chapter}&topic=${topic} in ${subsubdata.name}`
+  );
+};
 
   useEffect(() => {
     if (location.hash) {
@@ -140,7 +157,11 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
                                       </div>
 
                                       {/* Chat Button */}
-                                      <div className="relative group">
+                                      <div
+                                      onClick={() =>
+                                          handleAskAiClick({subjectname,chapter,subsubdata,topic})
+                                        }
+                                       className="relative group">
                                         <button className="text-xl">💬</button>
                                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-10">
                                           Ask AI

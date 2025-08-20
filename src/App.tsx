@@ -17,6 +17,7 @@ import { RouteGuard } from "./components/RouteGuard/RouteGuard";
 //New
 import ChaptersPage from "./pages/Subjects/ChapterPage"
 import CSChapterPage from "./pages/ComputerScience/ChapterPage";
+import MainChatbot from "./components/ai/MainChatbot";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -32,9 +33,10 @@ const App = () => (
             <Route path="/" element={<RouteGuard><Index /></RouteGuard>} />
             <Route path="/lessons" element={<RouteGuard><Lessons /></RouteGuard>} />
             <Route path="/option" element={<RouteGuard><OptionPage/></RouteGuard>}/>
-            <Route path="/quiz" element={<RouteGuard><Quiz subject="Computer Science" chapter="1" topic="Javascript Data Type" option="easy" /></RouteGuard>} />
+            <Route path="/quiz" element={<RouteGuard><Quiz/></RouteGuard>} />
             <Route path="/subject/:subjectname" element={<RouteGuard><ChaptersPage /></RouteGuard>} />
             <Route path="/computerscience/:subsubject/:chapter" element={<RouteGuard><CSChapterPage/></RouteGuard>}/>
+            <Route path="/aichat" element={<MainChatbot/>}/>
             {/* Public Route */}
             <Route path="/auth" element={<LoginSignUp/>}/>
         
