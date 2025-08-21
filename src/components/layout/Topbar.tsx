@@ -54,30 +54,26 @@ export const Topbar = () => {
           </div> */}
         </div>
         <div className="flex items-center gap-3">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button variant="soft">Gemini API Key</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Connect Gemini</DialogTitle>
-                <DialogDescription>Securely store your Gemini API key in this browser.</DialogDescription>
-              </DialogHeader>
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">Your key is stored locally in this browser. For production, we recommend using Supabase Edge Functions with secrets.</p>
-                <Input
-                  placeholder="AIz..."
-                  value={key}
-                  onChange={(e) => setKey(e.target.value)}
-                  type="password"
-                />
-                <div className="flex gap-2">
-                  <Button onClick={save} className="flex-1" variant="hero">Save</Button>
-                  <Button variant="outline" onClick={() => { setKey(""); /* clearGeminiApiKey() */ }}>Clear</Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="soft">AI is powered Gemini</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Powered by Gemini</DialogTitle>
+          <DialogDescription>Assistant AI uses Google Gemini API to generate smart, human-like answers to your questions.</DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+          <p>This app is powered by Google’s Gemini AI, one of the most advanced large language models available.</p>
+          <p>Your queries are securely processed through a predefined API key set by the developer.</p>
+          <p>
+            For production-grade applications, storing secrets like API keys in the frontend is not recommended. Consider using a secure backend or edge function setup.
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+
           {/* <Button variant="ghost" size="icon" aria-label="Notifications">
             <Bell className="h-5 w-5" />
           </Button> */}

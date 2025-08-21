@@ -6,10 +6,12 @@ import { baseAPI } from "@/api/base.config";
 import { persistConfig } from "./persist";
 import latestLessonReducer from "./latestlession.slice"
 import ComputerSciencePogressReducer from "./csprogress.slice"
+import CSOverallporgress from "./csoverallprogress.slice"
 const rootReducer = combineReducers({
   auth: authReducer,
   latestLesson:latestLessonReducer,
   csprogress:ComputerSciencePogressReducer,
+  csoverallprogress:CSOverallporgress,
   [baseAPI.reducerPath]: baseAPI.reducer,
 });
 

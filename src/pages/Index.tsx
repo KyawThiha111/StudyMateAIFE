@@ -11,6 +11,8 @@ import { GradientSpotlight } from "@/components/visual/GradientSpotlight";
 import { GeminiChat } from "@/components/ai/GeminiChat";
 import { useNavigate } from "react-router-dom";
 import {GeminiChat2} from "@/components/ai/GeminiChat2"
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 const weekly = [
   { day: "Mon", time: 2 },
   { day: "Tue", time: 3 },
@@ -23,6 +25,7 @@ const weekly = [
 
 const Index = () => {
   const navigate = useNavigate();
+  const CSoverallProgressValue = useSelector((state:RootState)=>state.csoverallprogress.computerScience)
   return (
     
     <div className="min-h-screen bg-background">
@@ -55,7 +58,7 @@ const Index = () => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                      { label: "CS", value: 75 },
+                      { label: "CS", value: CSoverallProgressValue },
                      
                     ].map((s) => (
                       <div key={s.label} className="rounded-lg border p-4">

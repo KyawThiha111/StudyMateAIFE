@@ -1,6 +1,6 @@
 // src/redux/persist.ts
 import storage from "redux-persist/lib/storage";
-const persistSlices = ["auth","latestLesson"]
+const persistSlices = ["auth","latestLesson","csoverallprogress"]
 export const persistConfig = {
   key: "root",
   storage:storage,

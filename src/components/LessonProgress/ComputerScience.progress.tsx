@@ -7,10 +7,13 @@ import ProgressCircle from "@/components/ui/progress-circle";
 import { Link, useNavigate } from "react-router-dom";
 import ComputerScienceData from "../SubjectData/ComputerScience/CSData";
 import { useGetProgressQuery } from "@/api/Subject/csprogress.api";
-
+import { useDispatch } from "react-redux";
+import { setComputerScienceProgress } from "@/redux/csoverallprogress.slice";
+import { useEffect } from "react";
+import { RootState } from "@/redux/store";
 export const ComputerScienceProgressComponent = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   // ✅ RTK Query fetching
   const { data: ComputerSciencProgess, isLoading, isError } =
     useGetProgressQuery();
@@ -56,7 +59,8 @@ console.log(ComputerSciencProgess)
     totalChaptersAll > 0
       ? Math.round((completedAll / totalChaptersAll) * 100)
       : 0;
-
+   
+    dispatch(setComputerScienceProgress(overallProgress))
   return (
     <main>
       {/* ✅ Top-level overall progress */}
@@ -120,3 +124,4 @@ console.log(ComputerSciencProgess)
 };
 
 export default ComputerScienceProgressComponent;
+

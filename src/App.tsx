@@ -32,7 +32,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<IndexPage />} />
+           
 
 
             {/* Protected Route */}
@@ -46,7 +46,7 @@ const App = () => (
             <Route path="finalquiz" element={<RouteGuard><FinalChapterQuiz/></RouteGuard>}/>
             {/* Public Route */}
             <Route path="/auth" element={<LoginSignUp/>}/>
-        
+            <Route path="/" element={<IndexPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

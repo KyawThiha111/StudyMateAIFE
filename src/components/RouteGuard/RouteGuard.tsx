@@ -11,7 +11,7 @@ export const RouteGuard: React.FC<Props> = ({ children }) => {
   const auth = useSelector((state: RootState) => state.auth);
 
   if (!auth.isAuthenticated) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
