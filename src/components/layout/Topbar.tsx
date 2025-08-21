@@ -48,10 +48,10 @@ export const Topbar = () => {
     <header className="h-16 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/40 sticky top-0 z-10">
       <div className="container h-full flex items-center justify-between gap-4">
         <div className="flex-1 max-w-2xl">
-          <div className="relative">
+          {/* <div className="relative">
             <Input placeholder="Search topics, courses..." className="pl-4" />
             <Sparkles className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center gap-3">
           <Dialog open={open} onOpenChange={setOpen}>

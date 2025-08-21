@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 /* Auth */
 import { LoginSignUp } from "./pages/Auth/LoginSignUp";
 import Index from "./pages/Index";
+import index_page from "./HomePage/index";
 import Lessons from "./pages/Lessons";
 import Quiz from "./pages/Quiz";
 import NotFound from "./pages/NotFound";
@@ -15,8 +16,10 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { RouteGuard } from "./components/RouteGuard/RouteGuard";
 //New
+import MainChatbot from "./components/ai/MainChatbot";
 import ChaptersPage from "./pages/Subjects/ChapterPage"
 import CSChapterPage from "./pages/ComputerScience/ChapterPage";
+import IndexPage from "./HomePage/index";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -28,11 +31,15 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<IndexPage />} />
+
+
             {/* Protected Route */}
-            <Route path="/" element={<RouteGuard><Index /></RouteGuard>} />
+            <Route path="/dashboard" element={<RouteGuard><Index /></RouteGuard>} />
             <Route path="/lessons" element={<RouteGuard><Lessons /></RouteGuard>} />
             <Route path="/option" element={<RouteGuard><OptionPage/></RouteGuard>}/>
-            <Route path="/quiz" element={<RouteGuard><Quiz subject="Computer Science" chapter="1" topic="Javascript Data Type" option="easy" /></RouteGuard>} />
+            <Route path="/quiz" element={<RouteGuard><Quiz/></RouteGuard>} />
+            <Route path="/aichat" element={<RouteGuard><MainChatbot /></RouteGuard>} />
             <Route path="/subject/:subjectname" element={<RouteGuard><ChaptersPage /></RouteGuard>} />
             <Route path="/computerscience/:subsubject/:chapter" element={<RouteGuard><CSChapterPage/></RouteGuard>}/>
             {/* Public Route */}

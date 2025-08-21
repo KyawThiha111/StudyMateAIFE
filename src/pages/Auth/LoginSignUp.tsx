@@ -35,7 +35,7 @@ export const LoginSignUp = () => {
         await signUp(data).unwrap();
       }
       reset();
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
     }

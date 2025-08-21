@@ -24,6 +24,7 @@ const weekly = [
 const Index = () => {
   const navigate = useNavigate();
   return (
+    
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>AI Study Dashboard | Assistant AI</title>
@@ -67,7 +68,7 @@ const Index = () => {
                     ))}
                   </div>
 
-                  <div>
+                  {/* <div>
                     <p className="text-sm text-muted-foreground mb-2">Weekly Study Time</p>
                     <ChartContainer
                       config={{ time: { label: "Hours", color: "hsl(var(--primary))" } }}
@@ -86,21 +87,21 @@ const Index = () => {
                         <Area type="monotone" dataKey="time" stroke="hsl(var(--primary))" fill="url(#fillArea)" />
                       </AreaChart>
                     </ChartContainer>
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
               <div className="lg:col-span-1">
                 {/* AI Assistant panel */}
-                <Card>
+                {/* <Card>
                   <CardContent className="pt-6">
                     <p className="text-sm text-muted-foreground mb-3">Your personalized study helper</p>
                     <Button asChild variant="hero" className="w-full mb-4">
                       <a href="#assistant">Start a conversation</a>
                     </Button>
                     {/* Mount the chat below */}
-                    <div id="assistant" />
+                    {/* <div id="assistant" />
                   </CardContent>
-                </Card>
+                </Card> */} 
               </div>
             </section>
 
@@ -124,13 +125,8 @@ const Index = () => {
             <div className="font-semibold text-base">{q.subject}</div>
             <p className="text-sm text-muted-foreground">{q.topic}</p>
 
-            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                ⏱ {q.time}
-              </span>
-              <span className="flex items-center gap-1">
-                ❓ {q.questions} Qs
-              </span>
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+             
               <Badge
                 variant={q.difficulty === "Hard" ? "destructive" : q.difficulty === "Medium" ? "secondary" : "outline"}
               >
@@ -144,30 +140,7 @@ const Index = () => {
     </CardContent>
   </Card>
 
-  {/* Recommended Learning */}
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-lg font-semibold">🎯 Recommended Learning</CardTitle>
-    </CardHeader>
-    <CardContent className="space-y-3">
-      {[
-        { title: "Advanced Calculus", meta: "8 weeks • Advanced" },
-        { title: "Quantum Physics Basics", meta: "10 weeks • Intermediate" },
-        { title: "Creative Writing", meta: "6 weeks • Intermediate" },
-      ].map((c, i) => (
-        <div
-          key={i}
-          className="rounded-xl border p-4 transition hover:shadow-md hover:border-primary/50"
-        >
-          <div className="font-medium flex items-center justify-between">
-            {c.title}
-            <Badge variant="outline">New</Badge>
-          </div>
-          <p className="text-sm text-muted-foreground mt-1">{c.meta}</p>
-        </div>
-      ))}
-    </CardContent>
-  </Card>
+
 </section>
 
 

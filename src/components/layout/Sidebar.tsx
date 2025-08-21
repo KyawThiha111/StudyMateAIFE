@@ -3,9 +3,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { to: "/", label: "Dashboard", icon: Home },
+  { to: "/dashboard", label: "Dashboard", icon: Home },
   { to: "/lessons", label: "Lessons", icon: BookOpen },
-  { to: "/assistant", label: "AI Assistant", icon: Bot },
+  { to: "/aichat", label: "AI Assistant", icon: Bot },
   { to: "/Quiz", label: "Quizzes", icon: ClipboardCheck },
 ];
 
