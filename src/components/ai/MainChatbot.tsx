@@ -7,7 +7,7 @@ import { getGeminiApiKey } from "@/lib/keys";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-
+import Sidebar from "../layout/Sidebar";
 export type ChatMessage = { role: "user" | "model"; content: string };
 
 const MainChatbot = () => {
@@ -122,77 +122,86 @@ Avoid sounding robotic. Be like a helpful mentor. Assume the student is learning
     setLanguage((prev) => (prev === "en" ? "my" : "en"));
   };
 
-  return (
-    <Card className="h-full shadow-lg border-muted">
-      <CardHeader className="bg-muted px-6 py-4 border-b flex justify-between items-center">
-        <CardTitle className="text-xl font-semibold text-primary">
-          🤖 StudyBuddy AI Assistant
-        </CardTitle>
-        <Button variant="outline" size="sm" onClick={toggleLanguage}>
-          {language === "en" ? "Switch to မြန်မာ" : "Switch to English"}
-        </Button>
-      </CardHeader>
+return (
+  <div className="flex h-screen">
+    {/* Sidebar */}
+    <div className="w-64 bg-gray-100 border-r p-4">
+      <Sidebar />
+    </div>
 
-      <CardContent className="flex flex-col h-[600px] p-4 space-y-3">
-        {/* Chat history */}
-        <div
-          ref={scrollerRef}
-          className="flex-1 overflow-auto space-y-3 pr-2 rounded border p-3 bg-background"
-        >
-          {messages.map((m, index) => (
-            <div
-              key={index}
-              className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[80%] px-4 py-2 rounded-lg text-sm whitespace-pre-line ${
-                  m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-accent text-accent-foreground"
-                }`}
-              >
-                {m.content}
-              </div>
-            </div>
-          ))}
-          {loading && <div className="text-sm text-muted-foreground">Thinking…</div>}
-        </div>
-
-        {/* Topic buttons */}
-        {latestLesson?.topic?.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {latestLesson.topic.map((topic: string, idx: number) => (
-              <Button
-                key={idx}
-                onClick={() => handleTopicClick(topic)}
-                className="text-sm px-3 py-1.5 rounded-full bg-muted hover:bg-muted-foreground/10"
-                variant="outline"
-              >
-                {topic}
-              </Button>
-            ))}
-          </div>
-        )}
-
-        {/* Input and send */}
-        <div className="flex gap-2 pt-2">
-          <Input
-            placeholder={
-              language === "en" ? "Type your question..." : "မေးချင်တာရေးပါ..."
-            }
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={onKeyDown}
-            className="flex-1"
-            disabled={loading}
-          />
-          <Button onClick={() => send()} disabled={loading} variant="hero">
-            Send
+    {/* Chat Area */}
+    <div className="flex-1 flex flex-col p-4">
+      <Card className="flex-1 shadow-lg border-muted flex flex-col">
+        <CardHeader className="bg-muted px-6 py-4 border-b flex justify-between items-center">
+          <CardTitle className="text-xl font-semibold text-primary">
+            🤖 StudyBuddy AI Assistant
+          </CardTitle>
+          <Button variant="outline" size="sm" onClick={toggleLanguage}>
+            {language === "en" ? "Switch to မြန်မာ" : "Switch to English"}
           </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardHeader>
+
+        <CardContent className="flex-1 flex flex-col p-4 space-y-3 overflow-hidden">
+          {/* Chat history */}
+          <div
+            ref={scrollerRef}
+            className="flex-1 overflow-auto space-y-3 pr-2 rounded border p-3 bg-background"
+          >
+            {messages.map((m, index) => (
+              <div
+                key={index}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] px-4 py-2 rounded-lg text-sm whitespace-pre-line ${
+                    m.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-accent text-accent-foreground"
+                  }`}
+                >
+                  {m.content}
+                </div>
+              </div>
+            ))}
+            {loading && <div className="text-sm text-muted-foreground">Thinking…</div>}
+          </div>
+
+          {/* Topic buttons */}
+          {latestLesson?.topic?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {latestLesson.topic.map((topic: string, idx: number) => (
+                <Button
+                  key={idx}
+                  onClick={() => handleTopicClick(topic)}
+                  className="text-sm px-3 py-1.5 rounded-full bg-muted hover:bg-muted-foreground/10"
+                  variant="outline"
+                >
+                  {topic}
+                </Button>
+              ))}
+            </div>
+          )}
+
+          {/* Input and send */}
+          <div className="flex gap-2 pt-2">
+            <Input
+              placeholder={language === "en" ? "Type your question..." : "မေးချင်တာရေးပါ..."}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
+              className="flex-1"
+              disabled={loading}
+            />
+            <Button onClick={() => send()} disabled={loading} variant="hero">
+              Send
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+);
+
 };
 
 export default MainChatbot;
