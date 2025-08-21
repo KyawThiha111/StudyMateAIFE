@@ -8,6 +8,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Sidebar from "../layout/Sidebar";
+import { Loader2, MessageSquare } from "lucide-react";
+
 export type ChatMessage = { role: "user" | "model"; content: string };
 
 const MainChatbot = () => {
@@ -101,7 +103,10 @@ Avoid sounding robotic. Be like a helpful mentor. Assume the student is learning
 
       setMessages((prev) => [...prev, { role: "model", content: replyText }]);
     } catch (error: any) {
-      toast({ title: "AI Error", description: error?.message || "Something went wrong." });
+      toast({
+        title: "AI Error",
+        description: error?.message || "Something went wrong.",
+      });
     } finally {
       setLoading(false);
     }
@@ -122,86 +127,100 @@ Avoid sounding robotic. Be like a helpful mentor. Assume the student is learning
     setLanguage((prev) => (prev === "en" ? "my" : "en"));
   };
 
-return (
-  <div className="flex h-screen">
-    {/* Sidebar */}
-    <div className="w-64 bg-gray-100 border-r p-4">
-      <Sidebar />
-    </div>
+  return (
+    <div className="flex h-screen bg-muted/20">
+      {/* Sidebar */}
+      <div className="hidden md:block w-64 bg-card border-r shadow-sm">
+        <Sidebar />
+      </div>
 
-    {/* Chat Area */}
-    <div className="flex-1 flex flex-col p-4">
-      <Card className="flex-1 shadow-lg border-muted flex flex-col">
-        <CardHeader className="bg-muted px-6 py-4 border-b flex justify-between items-center">
-          <CardTitle className="text-xl font-semibold text-primary">
-            🤖 StudyBuddy AI Assistant
-          </CardTitle>
-          <Button variant="outline" size="sm" onClick={toggleLanguage}>
-            {language === "en" ? "Switch to မြန်မာ" : "Switch to English"}
-          </Button>
-        </CardHeader>
+      {/* Chat Area */}
+      <div className="flex-1 flex flex-col p-4">
+        <Card className="flex-1 shadow-lg border-muted flex flex-col rounded-2xl overflow-hidden">
+          <CardHeader className="bg-primary/10 px-6 py-4 border-b flex justify-between items-center">
+            <CardTitle className="flex items-center gap-2 text-xl font-semibold text-primary">
+              <MessageSquare className="w-5 h-5" />
+              StudyBuddy AI Assistant
+            </CardTitle>
+            <Button variant="outline" size="sm" onClick={toggleLanguage}>
+              {language === "en" ? "Switch to မြန်မာ" : "Switch to English"}
+            </Button>
+          </CardHeader>
 
-        <CardContent className="flex-1 flex flex-col p-4 space-y-3 overflow-hidden">
-          {/* Chat history */}
-          <div
-            ref={scrollerRef}
-            className="flex-1 overflow-auto space-y-3 pr-2 rounded border p-3 bg-background"
-          >
-            {messages.map((m, index) => (
-              <div
-                key={index}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
-              >
+          <CardContent className="flex-1 flex flex-col p-4 space-y-3 overflow-hidden">
+            {/* Chat history */}
+            <div
+              ref={scrollerRef}
+              className="flex-1 overflow-auto space-y-4 pr-2 rounded-lg border p-4 bg-background"
+            >
+              {messages.map((m, index) => (
                 <div
-                  className={`max-w-[80%] px-4 py-2 rounded-lg text-sm whitespace-pre-line ${
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-accent text-accent-foreground"
+                  key={index}
+                  className={`flex ${
+                    m.role === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {m.content}
+                  <div
+                    className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm shadow-sm whitespace-pre-line ${
+                      m.role === "user"
+                        ? "bg-primary text-primary-foreground rounded-br-sm"
+                        : "bg-accent text-accent-foreground rounded-bl-sm"
+                    }`}
+                  >
+                    {m.content}
+                  </div>
                 </div>
-              </div>
-            ))}
-            {loading && <div className="text-sm text-muted-foreground">Thinking…</div>}
-          </div>
-
-          {/* Topic buttons */}
-          {latestLesson?.topic?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {latestLesson.topic.map((topic: string, idx: number) => (
-                <Button
-                  key={idx}
-                  onClick={() => handleTopicClick(topic)}
-                  className="text-sm px-3 py-1.5 rounded-full bg-muted hover:bg-muted-foreground/10"
-                  variant="outline"
-                >
-                  {topic}
-                </Button>
               ))}
+              {loading && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="animate-spin w-4 h-4" /> Thinking…
+                </div>
+              )}
             </div>
-          )}
 
-          {/* Input and send */}
-          <div className="flex gap-2 pt-2">
-            <Input
-              placeholder={language === "en" ? "Type your question..." : "မေးချင်တာရေးပါ..."}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              className="flex-1"
-              disabled={loading}
-            />
-            <Button onClick={() => send()} disabled={loading} variant="hero">
-              Send
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+            {/* Suggested Topics */}
+            {latestLesson?.topic?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {latestLesson.topic.map((topic: string, idx: number) => (
+                  <Button
+                    key={idx}
+                    onClick={() => handleTopicClick(topic)}
+                    className="text-sm px-3 py-1.5 rounded-full"
+                    variant="secondary"
+                  >
+                    {topic}
+                  </Button>
+                ))}
+              </div>
+            )}
+
+            {/* Input */}
+            <div className="flex gap-2 pt-2">
+              <Input
+                placeholder={
+                  language === "en"
+                    ? "Type your question..."
+                    : "မေးချင်တာရေးပါ..."
+                }
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={onKeyDown}
+                className="flex-1 rounded-full px-4"
+                disabled={loading}
+              />
+              <Button
+                onClick={() => send()}
+                disabled={loading}
+                className="rounded-full px-6"
+              >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Send"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default MainChatbot;

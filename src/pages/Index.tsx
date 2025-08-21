@@ -5,153 +5,213 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import { GradientSpotlight } from "@/components/visual/GradientSpotlight";
-import { GeminiChat } from "@/components/ai/GeminiChat";
 import { useNavigate } from "react-router-dom";
-import {GeminiChat2} from "@/components/ai/GeminiChat2"
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-const weekly = [
-  { day: "Mon", time: 2 },
-  { day: "Tue", time: 3 },
-  { day: "Wed", time: 1.2 },
-  { day: "Thu", time: 4 },
-  { day: "Fri", time: 3.6 },
-  { day: "Sat", time: 2.4 },
-  { day: "Sun", time: 12 },
-];
+import { Menu, BookOpen, Brain, Clock } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
-  const CSoverallProgressValue = useSelector((state:RootState)=>state.csoverallprogress.computerScience)
+  const CSoverallProgressValue = useSelector(
+    (state: RootState) => state.csoverallprogress.computerScience
+  );
+
+  // State to handle mobile sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   return (
-    
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative">
       <Helmet>
         <title>AI Study Dashboard | Assistant AI</title>
-        <meta name="description" content="Track learning progress and chat with an AI tutor on the Assistant AI study dashboard." />
+        <meta
+          name="description"
+          content="Track learning progress and chat with an AI tutor on the Assistant AI study dashboard."
+        />
         <link rel="canonical" href="/" />
       </Helmet>
+
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-30 lg:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+
       <div className="flex">
-        <Sidebar />
+        {/* Sidebar */}
+        <div
+          className={`fixed top-0 left-0 bottom-0 w-64 h-full bg-gray-900 z-40 transition-transform transform ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:relative lg:translate-x-0`}
+        >
+          <Sidebar />
+        </div>
+
+        {/* Main Content */}
         <div className="flex-1 min-w-0">
           <Topbar />
-          <main className="container py-6 space-y-6">
-            <section className="relative overflow-hidden rounded-xl border p-6 bg-card">
-              <GradientSpotlight />
-              <h1 className="text-2xl md:text-3xl font-semibold">Study Mate AI</h1>
-              <p className="text-muted-foreground mt-1"></p>
-              {/* <div className="mt-4 flex flex-wrap gap-3">
-                <Badge variant="secondary">Study Streak • 7 days</Badge>
-                <Badge variant="secondary">Total Time • 18.5 hours</Badge>
-                <Badge variant="secondary">Achievements • 12</Badge>
-              </div> */}
+
+          {/* Hamburger (mobile only) */}
+          <button
+            className="lg:hidden fixed top-4 left-4 z-[60] bg-primary text-white p-2 rounded-md shadow-md"
+            onClick={toggleSidebar}
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+
+          <main className="container py-6 space-y-8">
+            {/* Header */}
+            <section className="relative overflow-hidden rounded-2xl border shadow-md p-8 bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Study Mate AI
+              </h1>
+              <p className="mt-2 text-muted-foreground text-sm md:text-base">
+                Your personalized AI tutor to track progress and prepare smarter 📚
+              </p>
             </section>
 
+            {/* Progress + Upcoming Subjects */}
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle>Learning Progress</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                      { label: "CS", value: CSoverallProgressValue },
-                     
-                    ].map((s) => (
-                      <div key={s.label} className="rounded-lg border p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-muted-foreground">{s.label}</span>
-                          <span className="text-sm font-medium">{s.value}%</span>
-                        </div>
-                        <Progress value={s.value} />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* <div>
-                    <p className="text-sm text-muted-foreground mb-2">Weekly Study Time</p>
-                    <ChartContainer
-                      config={{ time: { label: "Hours", color: "hsl(var(--primary))" } }}
-                      className="h-64"
-                    >
-                      <AreaChart data={weekly} margin={{ left: 12, right: 12 }}>
-                        <defs>
-                          <linearGradient id="fillArea" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
-                            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.05} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                        <XAxis dataKey="day" tickLine={false} axisLine={false} />
-                        <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
-                        <Area type="monotone" dataKey="time" stroke="hsl(var(--primary))" fill="url(#fillArea)" />
-                      </AreaChart>
-                    </ChartContainer>
-                  </div> */}
-                </CardContent>
-              </Card>
-              <div className="lg:col-span-1">
-                {/* AI Assistant panel */}
-                {/* <Card>
-                  <CardContent className="pt-6">
-                    <p className="text-sm text-muted-foreground mb-3">Your personalized study helper</p>
-                    <Button asChild variant="hero" className="w-full mb-4">
-                      <a href="#assistant">Start a conversation</a>
-                    </Button>
-                    {/* Mount the chat below */}
-                    {/* <div id="assistant" />
-                  </CardContent>
-                </Card> */} 
-              </div>
-            </section>
-
-            <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  {/* Upcoming Quizzes */}
-  <Card className="lg:col-span-2">
-    <CardHeader>
-      <CardTitle className="text-lg font-semibold">📅 Upcoming Quizzes</CardTitle>
-    </CardHeader>
-    <CardContent className="divide-y">
+              {/* Progress */}
+<Card className="lg:col-span-2 shadow-md rounded-xl">
+  <CardHeader>
+    <CardTitle>📊 Learning Progress</CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {[
-        { subject: "IT Fundamentals", topic: "Introduction to Computer Systems", difficulty: "Easy", time: "30 min", questions: 15 },
-        { subject: "Computer Science",topic:"What is Computer Science",  difficulty: "Medium", time: "20 min", questions: 10 },
-        { subject: "Programming", topic: "JavaScript Basics", difficulty: "Medium", time: "40 min", questions: 20 },
-      ].map((q, i) => (
+        { label: "Computer Science", value: CSoverallProgressValue, available: true },
+        { label: "Programming", value: 60, available: false },
+        { label: "Mathematics", value: 45, available: false },
+        { label: "AI Basics", value: 30, available: false },
+      ].map((s) => (
         <div
-          key={i}
-          className="py-4 flex items-center justify-between gap-4 transition hover:bg-muted/30 rounded-lg px-3"
+          key={s.label}
+          className={`rounded-lg border p-4 shadow-sm ${
+            s.available
+              ? "bg-white"
+              : "bg-muted/40 border-dashed opacity-60 cursor-not-allowed"
+          }`}
         >
-          <div>
-            <div className="font-semibold text-base">{q.subject}</div>
-            <p className="text-sm text-muted-foreground">{q.topic}</p>
-
-            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-             
-              <Badge
-                variant={q.difficulty === "Hard" ? "destructive" : q.difficulty === "Medium" ? "secondary" : "outline"}
-              >
-                {q.difficulty}
-              </Badge>
-            </div>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium flex items-center gap-2">
+              {s.label}
+              {!s.available && (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-300 text-gray-600">
+                  Coming Soon
+                </span>
+              )}
+            </span>
+            <span
+              className={`text-sm ${
+                s.available ? "text-muted-foreground" : "text-gray-400"
+              }`}
+            >
+              {s.available ? `${s.value}%` : "--"}
+            </span>
           </div>
-          <Button size="sm" onClick={() => navigate("/option/")}>Start</Button>
+          {s.available ? (
+            <Progress value={s.value} />
+          ) : (
+            <div className="h-2 w-full bg-gray-200 rounded-full" />
+          )}
         </div>
       ))}
-    </CardContent>
-  </Card>
+    </div>
+  </CardContent>
+</Card>
 
 
-</section>
+              {/* Upcoming Subjects */}
+              <Card className="shadow-md rounded-xl">
+                <CardHeader>
+                  <CardTitle>📖 Upcoming Subjects</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {[
+                    { name: "Data Structures", status: "In 2 days" },
+                    { name: "Networks", status: "In 5 days" },
+                    { name: "Operating Systems", status: "Next week" },
+                  ].map((s, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-3 rounded-lg bg-muted/40 hover:bg-muted/60 transition"
+                    >
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="w-4 h-4 text-primary" />
+                        <span className="font-medium">{s.name}</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {s.status}
+                      </span>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </section>
 
-
-            {/* Inline Chat Section */}
+            {/* Upcoming Quizzes */}
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-start-3">
-                {/* <GeminiChat2 /> */}
-              </div>
+              <Card className="lg:col-span-2 shadow-md rounded-xl bg-gradient-to-r from-indigo-50 to-white">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2 text-indigo-700 text-xl">
+      🚀 Welcome to Assistant AI (v1.0)
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
+    <p>
+      We’re excited to launch the <span className="font-semibold">first version</span> of our learning platform!  
+      This website is designed to make your study journey easier, smarter, and more interactive.
+    </p>
+
+    <ul className="list-disc pl-6 space-y-2 text-sm">
+      <li>
+        📚 Learn <span className="font-medium text-indigo-600">basic Computer Science</span> and popular 
+        <span className="font-medium text-indigo-600"> programming languages</span>.
+      </li>
+      <li>
+        🤖 An <span className="font-medium">AI assistant</span> will be with you throughout your learning process, helping you whenever you need.
+      </li>
+      <li>
+        📝 At the end of every chapter, take interactive quizzes to test your knowledge.
+      </li>
+      <li>
+        🎯 Two types of quizzes available:  
+        <ul className="list-disc pl-6 mt-1 space-y-1">
+          <li>✅ <span className="font-medium">Practice Quizzes</span> – Take as much time as you like after each chapter.</li>
+          <li>🏆 <span className="font-medium">Test Quizzes</span> – Earn a score and level up your progress bar.</li>
+        </ul>
+      </li>
+      <li>
+        🔄 Quizzes are <span className="font-semibold">AI-generated</span>, meaning they’re fresh and unique every time.
+      </li>
+    </ul>
+
+    <div className="pt-4">
+      <Button className="rounded-lg shadow-md" onClick={() => navigate("/lessons")}>
+        Start Learning Now
+      </Button>
+    </div>
+  </CardContent>
+</Card>
+
+
+              {/* AI Assistant Placeholder */}
+              <Card className="shadow-md rounded-xl bg-gradient-to-br from-secondary/20 via-background to-accent/10">
+                <CardHeader>
+                  <CardTitle>🤖 AI Assistant</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Chat with your AI tutor for instant help with quizzes and study
+                    plans.
+                  </p>
+                  <Button className="w-full">Open Chat</Button>
+                </CardContent>
+              </Card>
             </section>
           </main>
         </div>

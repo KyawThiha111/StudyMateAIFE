@@ -21,7 +21,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className="hidden sidebar-bg md:flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground sticky top-0">
+    <aside className=" sidebar-bg md:flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground sticky top-0">
       <div className="h-16 sidebar-bg flex items-center px-6 font-semibold tracking-tight">
         <div className="w-[50%]">
           <img src="/studymateAI.jpg" alt="Study Mate AI Logo" />
