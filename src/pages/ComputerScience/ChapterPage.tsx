@@ -14,12 +14,18 @@ import { GeminiChat } from "@/components/ai/GeminiChat";
 import { useNavigate } from "react-router-dom";
 import {GeminiChat2} from "@/components/ai/GeminiChat2"
 import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 /* Pags */
 import ChapterOnePage from "@/components/ComputerScience/Chapter1"
 import ChapterTwoPage from "@/components/ComputerScience/Chapter2";
 const CSChapterPage = ()=>{
     const navigate = useNavigate()
     const {chapter} = useParams();
+    const [searchParams] = useSearchParams();
+    const subject = searchParams.get("subject");
+    const chaptername = searchParams.get("chaptername");
+    const topic = searchParams.get("topic");
+    const option = searchParams.get("option");
     let content:any;
     if(chapter==="1"){
         content=<ChapterOnePage/>
@@ -69,7 +75,7 @@ const CSChapterPage = ()=>{
                       </div>
                     </section>
         
-                    <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/*   <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       <Card className="lg:col-span-2">
                         <CardHeader>
                           <CardTitle>Upcoming Quizzes</CardTitle>
@@ -94,6 +100,46 @@ const CSChapterPage = ()=>{
                               <Button onClick={() => navigate("/option/")}>Start Quiz</Button>
                             </div>
                           ))}
+                        </CardContent>
+                      </Card>
+        
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Recommended Learning</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          {[
+                            { title: "Advanced Calculus", meta: "8 weeks • Advanced" },
+                            { title: "Quantum Physics Basics", meta: "10 weeks • Intermediate" },
+                            { title: "Creative Writing", meta: "6 weeks • Intermediate" },
+                          ].map((c, i) => (
+                            <div key={i} className="rounded-lg border p-4">
+                              <div className="font-medium">{c.title}</div>
+                              <p className="text-sm text-muted-foreground">{c.meta}</p>
+                            </div>
+                          ))}
+                        </CardContent>
+                      </Card>
+                    </section> */}
+                      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <Card className="lg:col-span-2">
+                        <CardHeader>
+                          <CardTitle>Chapter {chapter} Quizzes</CardTitle>
+                        </CardHeader>
+                        <CardContent className="divide-y">
+                          <div className="py-2 flex items-center justify-between gap-4">
+                              <div>
+                                <div className="font-medium">{chaptername}</div>
+          
+                                <div className="mt-1 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                                  <span>{topic}</span>
+                                  {/* <span>•</span>
+                                  <span>{}k</span> */}
+                                  <Badge variant="secondary">{}</Badge>
+                                </div>
+                              </div>
+                              <Button onClick={() => navigate(`/finalquiz?subject=${subject}&chapter=${chapter}&chaptername=${chaptername}&topic=${topic}&option=${option}`)}>Start Quiz</Button>
+                            </div>
                         </CardContent>
                       </Card>
         

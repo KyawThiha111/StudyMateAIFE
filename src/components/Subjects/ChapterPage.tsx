@@ -93,7 +93,8 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
                   >
                     <CardHeader
                       onClick={() => {
-                        if (isUnlocked) navigate(`${chapter.route}?chaptername=${subsubdata.name}`);
+                        const cardtopic = encodeURIComponent(JSON.stringify(chapter.content))
+                        if (isUnlocked) navigate(`${chapter.route}?chapter=${chapter.chapter}&subject=${subjectname}&chaptername=${subsubdata.name}&topic=${cardtopic}&option=intermediate`);
                       }}
                       className="flex flex-row justify-between items-center space-y-0 pb-2"
                     >

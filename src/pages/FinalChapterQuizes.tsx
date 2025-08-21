@@ -26,6 +26,8 @@ export default function FinalChapterQuiz() {
   const chapter = searchParams.get("chapter");
   const topic = searchParams.get("topic");
   const option = searchParams.get("option");
+  const chaptername = searchParams.get("chaptername");
+
 
   const [updateProgress, { isLoading: isUpdating }] = useUpdateProgressMutation();
 
@@ -33,6 +35,7 @@ export default function FinalChapterQuiz() {
     setLoading(true);
     setShowResults(false);
     setUserAnswers({});
+     console.log("Hello",chaptername,chapter,topic);
     try {
       const res = await axios.get("https://hackathon-20uq.onrender.com/api/quizes", {
         params: { subject, chapter, topic, option },
@@ -71,7 +74,8 @@ export default function FinalChapterQuiz() {
     if (score >= 80 && subject && chapter) {
       try {
         const chapterId = parseInt(chapter);
-        await updateProgress({ subject, chapterId }).unwrap();
+    
+        await updateProgress({subject:chaptername, chapterId }).unwrap();
         toast({
           title: "🎉 Quiz Passed!",
           description: `You scored ${scorePercent}%. Chapter progress has been updated.`,
