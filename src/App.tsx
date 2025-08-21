@@ -37,8 +37,8 @@ const App = () => (
             <Route path="/quiz" element={<RouteGuard><Quiz/></RouteGuard>} />
             <Route path="/subject/:subjectname" element={<RouteGuard><ChaptersPage /></RouteGuard>} />
             <Route path="/computerscience/:subsubject/:chapter" element={<RouteGuard><CSChapterPage/></RouteGuard>}/>
-            <Route path="/aichat" element={<MainChatbot/>}/>
-            <Route path="/finalquiz" element={<FinalChapterQuiz/>}/>
+            <Route path="/aichat" element={<RouteGuard><MainChatbot/></RouteGuard>}/>
+            <Route path="/finalquiz" element={<RouteGuard><FinalChapterQuiz/></RouteGuard>}/>
             {/* Public Route */}
             <Route path="/auth" element={<LoginSignUp/>}/>
         
