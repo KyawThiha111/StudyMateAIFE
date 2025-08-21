@@ -5,6 +5,8 @@ import { SubjectDataType } from "../SubjectData/ComputerScience/CSData";
 import ComputerScienceData from "../SubjectData/ComputerScience/CSData";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Trophy } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setLatestLesson } from "@/redux/latestlession.slice";
 import {
   Accordion,
   AccordionContent,
@@ -27,7 +29,7 @@ interface SubProgessType {
 const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const dispatch = useDispatch();
   const {
     data: ComputerSciencProgess,
     isLoading,
@@ -60,7 +62,8 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
 
       <div className="space-y-4">
         {SubData.subSubject.map((subsubdata) => {
-          const completedChapter = SubProgress.progress.progress[subsubdata.name] || [];
+          const completedChapter =
+            SubProgress.progress.progress[subsubdata.name] || [];
 
           console.log("Chapter group:", subsubdata.name);
           console.log("Completed chapters:", completedChapter);
@@ -93,8 +96,13 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
                   >
                     <CardHeader
                       onClick={() => {
-                        const cardtopic = encodeURIComponent(JSON.stringify(chapter.content))
-                        if (isUnlocked) navigate(`${chapter.route}?chapter=${chapter.chapter}&subject=${subjectname}&chaptername=${subsubdata.name}&topic=${cardtopic}&option=intermediate`);
+                        const cardtopic = encodeURIComponent(
+                          JSON.stringify(chapter.content)
+                        );
+                        if (isUnlocked)
+                          navigate(
+                            `${chapter.route}?chapter=${chapter.chapter}&subject=${subjectname}&chaptername=${subsubdata.name}&topic=${cardtopic}&option=intermediate`
+                          );
                       }}
                       className="flex flex-row justify-between items-center space-y-0 pb-2"
                     >
@@ -141,7 +149,22 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
                                       </div>
 
                                       {/* Chat Button */}
-                                      <div className="relative group">
+                                      <div
+                                        onClick={() => {
+                                          dispatch(
+                                            setLatestLesson({
+                                              subject: subjectname,
+                                              chapter: chapter.chapter,
+                                              title: chapter.title,
+                                              topic: [topic],
+                                            })
+                                          );
+                                          navigate(
+                                            `/aichat?subject=${subjectname}&chapter=${chapter.chapter}&topic=${topic} in ${subsubdata.name}`
+                                          );
+                                        }}
+                                        className="relative group"
+                                      >
                                         <button className="text-xl">💬</button>
                                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-10">
                                           Ask AI
@@ -170,4 +193,3 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
 };
 
 export default ChaptersComponent;
-

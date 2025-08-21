@@ -1,4 +1,4 @@
-export const GEMINI_KEY_STORAGE = "GEMINI_API_KEY";
+/* export const GEMINI_KEY_STORAGE = "GEMINI_API_KEY";
 
 export function getGeminiApiKey(): string | null {
   try {
@@ -22,4 +22,8 @@ export function clearGeminiApiKey() {
   } catch {
     // ignore
   }
+} */
+
+export function getGeminiApiKey(): string {
+   return import.meta.env.VITE_GEMINI_API_KEY || null;
 }

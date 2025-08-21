@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import { getGeminiApiKey, setGeminiApiKey, clearGeminiApiKey } from "@/lib/keys";
+import { getGeminiApiKey } from "@/lib/keys";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/auth.slice";
 import { useSelector } from "react-redux";
@@ -40,7 +40,7 @@ export const Topbar = () => {
   }, []);
 
   const save = () => {
-    setGeminiApiKey(key.trim());
+    //setGeminiApiKey(key.trim());
     setOpen(false);
   };
   if(!authToken) return null;
@@ -73,7 +73,7 @@ export const Topbar = () => {
                 />
                 <div className="flex gap-2">
                   <Button onClick={save} className="flex-1" variant="hero">Save</Button>
-                  <Button variant="outline" onClick={() => { setKey(""); clearGeminiApiKey(); }}>Clear</Button>
+                  <Button variant="outline" onClick={() => { setKey(""); /* clearGeminiApiKey() */ }}>Clear</Button>
                 </div>
               </div>
             </DialogContent>
