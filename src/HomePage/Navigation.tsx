@@ -13,16 +13,16 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="bg-gradient-primary p-2 rounded-xl shadow-soft">
-              <img src={studymateLogo} alt="StudyMate AI" className="h-6 w-6 text-white" />
+            <div className="primary p-2 rounded-xl shadow-soft">
+              <img src={studymateLogo} alt="StudyMate AI" className="h-13 w-10 text-white" />
             </div>
             <span className="text-xl font-bold text-gradient-primary">StudyMate AI</span>
           </div>
 
           {/* Auth Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center bg-color-blue space-x-4">
             <Button  onClick={() => navigate("/auth")} variant="ghost">Login</Button>
-            <Button onClick={()=> navigate("/auth")} variant="hero">Sign Up</Button>
+            <Button onClick={()=> navigate("/auth")} variant="blue">Sign Up</Button>
           </div>
         </div>
       </div>
