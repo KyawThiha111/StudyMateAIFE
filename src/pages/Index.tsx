@@ -197,8 +197,6 @@ const Index = () => {
     </div>
   </CardContent>
 </Card>
-
-
               {/* AI Assistant Placeholder */}
               <Card className="shadow-md rounded-xl bg-gradient-to-br from-secondary/20 via-background to-accent/10">
                 <CardHeader>

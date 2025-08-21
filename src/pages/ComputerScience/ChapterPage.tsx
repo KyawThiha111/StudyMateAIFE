@@ -18,6 +18,15 @@ import { useSearchParams } from "react-router-dom";
 /* Pags */
 import ChapterOnePage from "@/components/ComputerScience/Chapter1"
 import ChapterTwoPage from "@/components/ComputerScience/Chapter2";
+import ChapterThreePage from "@/components/ComputerScience/Chapter3"
+import ChapterFourPage from "@/components/ComputerScience/Chapter4";
+import ChapterFivePage from "@/components/ComputerScience/Chapter5";
+import ChapterSixPage from "@/components/ComputerScience/Chapter6";
+/* React */
+import ChapterThreePageFE from "@/components/ComputerScience/FrontendDev/Chapter3FE";
+import ChapterFourPageFE from "@/components/ComputerScience/FrontendDev/Chapter4FE";
+import ChapterTwoPageFE from "@/components/ComputerScience/FrontendDev/Chapter2FE";
+import ChapterOnePageFE from "@/components/ComputerScience/FrontendDev/Chapter1FE";
 const CSChapterPage = ()=>{
     const navigate = useNavigate()
     const {chapter} = useParams();
@@ -31,6 +40,14 @@ const CSChapterPage = ()=>{
         content=<ChapterOnePage/>
     }else if(chapter==="2"){
         content=<ChapterTwoPage/>
+    }else if(chapter==="3"){
+      content=<ChapterThreePage/>
+    }else if(chapter==="4"){
+      content=<ChapterFourPage/>
+    }else if(chapter==="5"){
+      content=<ChapterFivePage/>
+    }else if(chapter==="6"){
+      content=<ChapterSixPage/>
     }
     return(
         <div className="min-h-screen bg-background">
