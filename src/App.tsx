@@ -18,6 +18,7 @@ import { RouteGuard } from "./components/RouteGuard/RouteGuard";
 import ChaptersPage from "./pages/Subjects/ChapterPage"
 import CSChapterPage from "./pages/ComputerScience/ChapterPage";
 import MainChatbot from "./components/ai/MainChatbot";
+import FinalChapterQuiz from "./pages/FinalChapterQuizes";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/subject/:subjectname" element={<RouteGuard><ChaptersPage /></RouteGuard>} />
             <Route path="/computerscience/:subsubject/:chapter" element={<RouteGuard><CSChapterPage/></RouteGuard>}/>
             <Route path="/aichat" element={<MainChatbot/>}/>
+            <Route path="/finalquiz" element={<FinalChapterQuiz/>}/>
             {/* Public Route */}
             <Route path="/auth" element={<LoginSignUp/>}/>
         

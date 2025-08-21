@@ -110,7 +110,7 @@ const ChaptersComponent: React.FC<SubjectProp> = ({ subjectname }) => {
                   >
                     <CardHeader
                       onClick={() => {
-                        if (isUnlocked) navigate(chapter.route);
+                        if (isUnlocked) navigate(`${chapter.route}?chaptername=${subsubdata.name}`);
                       }}
                       className="flex flex-row justify-between items-center space-y-0 pb-2"
                     >

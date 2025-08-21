@@ -5,21 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
-import {useSearchParams} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { useUpdateProgressMutation } from "@/api/Subject/csprogress.api";
+import { toast } from "@/hooks/use-toast";
+
 interface QuizQuestion {
   question: string;
   options: string[];
   answer: string;
 }
 
-interface QuizProps {
-  subject: string;
-  chapter: string;
-  topic: string;
-  option: string; // "easy", "medium", "hard"
-}
-
-export default function Quiz() {
+export default function FinalChapterQuiz() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
@@ -29,7 +25,10 @@ export default function Quiz() {
   const subject = searchParams.get("subject");
   const chapter = searchParams.get("chapter");
   const topic = searchParams.get("topic");
-  const option = searchParams.get('option');
+  const option = searchParams.get("option");
+
+  const [updateProgress, { isLoading: isUpdating }] = useUpdateProgressMutation();
+
   const fetchQuiz = async () => {
     setLoading(true);
     setShowResults(false);
@@ -65,6 +64,35 @@ export default function Quiz() {
 
   const scorePercent = ((correctCount / questions.length) * 100).toFixed(1);
 
+  const handleCheckAnswers = async () => {
+    setShowResults(true);
+
+    const score = parseFloat(scorePercent);
+    if (score >= 80 && subject && chapter) {
+      try {
+        const chapterId = parseInt(chapter);
+        await updateProgress({ subject, chapterId }).unwrap();
+        toast({
+          title: "🎉 Quiz Passed!",
+          description: `You scored ${scorePercent}%. Chapter progress has been updated.`,
+        });
+      } catch (err) {
+        toast({
+          title: "⚠️ Progress Update Failed",
+          description: "Your score was saved, but we couldn't update your progress.",
+          variant: "destructive",
+        });
+        console.error("Failed to update progress:", err);
+      }
+    } else {
+      toast({
+        title: "❌ Quiz Failed",
+        description: "You need at least 80% to pass. Try again!",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -74,9 +102,8 @@ export default function Quiz() {
       <div className="flex">
         <Sidebar />
         <div className="flex-1 min-w-0">
-          <Topbar/>
+          <Topbar />
           <main className="container py-6 space-y-6">
-
             <section className="rounded-xl border p-6 bg-card shadow-sm">
               <h1 className="text-2xl font-bold">Topic Quiz</h1>
               <p className="text-muted-foreground mt-2">Test your knowledge on this topic.</p>
@@ -118,7 +145,11 @@ export default function Quiz() {
                         })}
 
                         {showResults && (
-                          <div className={`text-sm mt-2 ${isCorrect ? "text-green-600" : "text-red-500"}`}>
+                          <div
+                            className={`text-sm mt-2 ${
+                              isCorrect ? "text-green-600" : "text-red-500"
+                            }`}
+                          >
                             {isCorrect ? "✅ Correct" : `❌ Correct answer: ${q.answer}`}
                           </div>
                         )}
@@ -129,15 +160,16 @@ export default function Quiz() {
 
                 {!showResults ? (
                   <div className="flex justify-end">
-                    <Button onClick={() => setShowResults(true)} className="mt-4">
-                      Check Answers
+                    <Button onClick={handleCheckAnswers} className="mt-4" disabled={isUpdating}>
+                      {isUpdating ? "Updating..." : "Check Answers"}
                     </Button>
                   </div>
                 ) : (
                   <div className="rounded-lg border p-6 bg-muted">
                     <h2 className="text-xl font-semibold">📊 Results</h2>
                     <p className="mt-2 text-base">
-                      You got <strong>{correctCount}</strong> out of <strong>{questions.length}</strong> correct.
+                      You got <strong>{correctCount}</strong> out of{" "}
+                      <strong>{questions.length}</strong> correct.
                     </p>
                     <p className="text-muted-foreground">Score: {scorePercent}%</p>
                   </div>
