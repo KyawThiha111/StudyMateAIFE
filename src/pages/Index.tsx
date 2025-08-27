@@ -207,7 +207,7 @@ const Index = () => {
                     Chat with your AI tutor for instant help with quizzes and study
                     plans.
                   </p>
-                  <Button className="w-full">Open Chat</Button>
+                  <Button onClick={()=>navigate("/aichat")} className="w-full">Open Chat</Button>
                 </CardContent>
               </Card>
             </section>

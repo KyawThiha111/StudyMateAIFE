@@ -49,7 +49,7 @@ const ChaptersPage = ()=>{
                         <Card>
                           <CardContent className="pt-6">
                             <p className="text-sm text-muted-foreground mb-3">Your personalized study helper</p>
-                            <Button asChild variant="hero" className="w-full mb-4">
+                            <Button onClick={()=>navigate("/aichat")} asChild variant="hero" className="w-full mb-4">
                               <a href="#assistant">Start a conversation</a>
                             </Button>
                             {/* Mount the chat below */}
