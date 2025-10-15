@@ -82,9 +82,9 @@ const Lessons = () => {
             </Card>
 
             {/* Lessons Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Computer Science Lessons */}
-              <Card className="shadow-lg hover:shadow-xl transition rounded-2xl">
+              <Card className="shadow-lg md:col-span-2 hover:shadow-xl transition rounded-2xl">
                 <CardHeader>
                   <CardTitle className="text-xl font-semibold">
                     Computer Science
@@ -102,7 +102,7 @@ const Lessons = () => {
               </Card>
 
               {/* Placeholder for Future Subjects */}
-              <Card className="shadow-lg hover:shadow-xl transition rounded-2xl">
+              <Card className="shadow-lg md:col-span-1 hover:shadow-xl transition rounded-2xl">
                 <CardHeader>
                   <CardTitle className="text-xl font-semibold">
                     More Subjects Coming Soon

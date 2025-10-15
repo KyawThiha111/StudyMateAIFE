@@ -104,7 +104,7 @@ export const ComputerScienceProgressComponent = () => {
                 }
                 className="cursor-pointer hover:shadow-lg transition rounded-xl flex flex-col justify-between"
               >
-                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 gap-4">
+                <CardHeader className="flex flex-col sm:items-center sm:justify-between space-y-3 sm:space-y-0 gap-4">
                   <div>
                     <CardTitle className="text-base sm:text-lg font-semibold">
                       {chapter.name}

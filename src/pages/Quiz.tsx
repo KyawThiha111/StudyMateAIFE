@@ -34,8 +34,9 @@ export default function Quiz() {
     setLoading(true);
     setShowResults(false);
     setUserAnswers({});
+    //https://hackathon-20uq.onrender.com
     try {
-      const res = await axios.get("https://hackathon-20uq.onrender.com/api/quizes", {
+      const res = await axios.get("https://apex-dev-backend.onrender.com/api/quizes", {
         params: { subject, chapter, topic, option },
       });
 

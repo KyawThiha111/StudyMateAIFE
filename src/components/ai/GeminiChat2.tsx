@@ -52,7 +52,7 @@ export const GeminiChat2 = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
       // --- FIX: history must start with a user message ---
       const firstUserIndex = messages.findIndex((m) => m.role === "user");
